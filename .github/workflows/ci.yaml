@@ -5,6 +5,9 @@ on: push
 jobs:
   ci:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: ['%gcc', '%clang']
     env:
       SPACK_COLOR: always
       CCACHE_DIR: ~/.spack-ci/ccache_dir
@@ -15,13 +18,15 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/.spack-ci
-        key: ${{ runner.os }}-spack-v2-${{ hashFiles('./tools/environments/ci/spack.yaml') }}
+        key: ${{ runner.os }}-spack-${{ matrix.compiler }}-${{ hashFiles('./tools/environments/ci/spack.yaml') }}
         restore-keys: ${{ runner.os }}-spack-v2-
     - name: Setup Spack
       run: |
         wget -q https://github.com/haampie/spack-batteries-included/releases/download/develop/spack-x86_64.x -O ~/spack.x && chmod +x ~/spack.x
         ~/spack.x -e ./tools/environments/ci/ repo add ./tools/spack
         ~/spack.x -e ./tools/environments/ci/ concretize
+      env:
+        COMPILER: ${{ matrix.compiler }}
     - name: Build dependencies
       run: ~/spack.x -e ./tools/environments/ci/ install -j3 --only=dependencies
       env:
