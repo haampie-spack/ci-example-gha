@@ -7,9 +7,9 @@ spack:
     test_cache: ~/.spack-ci/test_cache
     install_tree:
       root: ~/.spack-ci/install
-  specs:
-  - mypkg@main ${COMPILER} ~cuda +mpi +tests build_type=Debug ^mpich
   packages:
+    mypkg:
+      variants: ~cuda +mpi +tests build_type=Debug ^mpich
     all:
       target: [x86_64]
   develop:
