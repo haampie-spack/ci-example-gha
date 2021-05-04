@@ -8,7 +8,7 @@ spack:
     install_tree:
       root: ~/.spack-ci/install
   specs:
-  - mypkg@main ~cuda ~mpi +tests build_type=Debug
+  - mypkg@main ~cuda +mpi +tests build_type=Debug ^mpich
   packages:
     all:
       target: [x86_64]
