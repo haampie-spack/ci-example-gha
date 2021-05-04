@@ -5,6 +5,8 @@ on: push
 jobs:
   ci:
     runs-on: ubuntu-latest
+    env:
+      SPACK_COLOR: always
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
