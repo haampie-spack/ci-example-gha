@@ -18,7 +18,6 @@ jobs:
         restore-keys: spack
     - name: Setup Spack
       run: |
-        echo $PATH
         wget -q https://github.com/haampie/spack-batteries-included/releases/download/develop/spack-x86_64.x -O ~/spack.x && chmod +x ~/spack.x
         ~/spack.x -e ./tools/environments/ci/ repo add ./tools/spack
         ~/spack.x -e ./tools/environments/ci/ concretize
