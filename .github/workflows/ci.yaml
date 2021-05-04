@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SPACK_COLOR: always
+      CCACHE_DIR: ~/.spack-ci/ccache_dir
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
