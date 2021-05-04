@@ -15,13 +15,16 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ~/.spack-ci
-        key: ${{ runner.os }}-spack-${{ hashFiles('./tools/environments/ci/spack.yaml') }}
-        restore-keys: ${{ runner.os }}-spack-
+        key: ${{ runner.os }}-spack-v2-${{ hashFiles('./tools/environments/ci/spack.yaml') }}
+        restore-keys: ${{ runner.os }}-spack-v2-
     - name: Setup Spack
       run: |
         wget -q https://github.com/haampie/spack-batteries-included/releases/download/develop/spack-x86_64.x -O ~/spack.x && chmod +x ~/spack.x
         ~/spack.x -e ./tools/environments/ci/ repo add ./tools/spack
         ~/spack.x -e ./tools/environments/ci/ concretize
-    - name: Build and test
-      run: |
-        ~/spack.x -e ./tools/environments/ci/ install -v --test=root
+    - name: Build dependencies
+      run: ~/spack.x -e ./tools/environments/ci/ install -j3 --only=dependencies
+      env:
+        SPACK_OPTIMIZATION_FLAGS: "-O1"
+    - name: Build and test package
+      run: ~/spack.x -e ./tools/environments/ci/ install -j3 --test=root -v
