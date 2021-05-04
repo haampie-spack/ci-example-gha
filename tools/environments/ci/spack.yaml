@@ -14,6 +14,8 @@ spack:
       variants: ~fortran
     all:
       target: [x86_64]
+      providers:
+        mpi: [mpich]
   develop:
     mypkg:
       path: ../../..
