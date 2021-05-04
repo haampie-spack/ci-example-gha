@@ -1,23 +1,26 @@
-name: CI
+name: Build
 
-on:
-  push:
-    branches:
-    - main
-  pull_request:
-    branches:
-    - main
+on: push
+
 jobs:
   ci:
     runs-on: ubuntu-latest
-    container:
-      image: stabbles/pkg-example:latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup Spack
-        run: |
-          /opt/spack/bin/spack --color=always -e ./tools/environments/ci/ repo add ./tools/spack
-          /opt/spack/bin/spack --color=always -e ./tools/environments/ci/ concretize
-      - name: Build and test
-        run: |
-          /opt/spack/bin/spack --color=always -e ./tools/environments/ci/ install -v --test=root
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Cache Spack
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ~/.spack-ci
+        key: spack
+        restore-keys: spack
+    - name: Setup Spack
+      run: |
+        wget -q https://github.com/haampie/spack-batteries-included/releases/download/develop/spack-x86_64.x -O /bin/spack.x && chmod +x /bin/spack.x
+        spack.x -e ./tools/environments/ci/ repo add ./tools/spack
+        spack.x -e ./tools/environments/ci/ concretize
+    - name: Build and test
+      run: |
+        spack.x -e ./tools/environments/ci/ install -v --test=root
