@@ -31,6 +31,6 @@ jobs:
     - name: Build dependencies
       run: ~/spack.x -e tools/environments/ci/ install -j3 --only=dependencies
       env:
-        SPACK_OPTIMIZATION_FLAGS: "-O1"
+        SPACK_OPTIMIZATION_FLAGS: "-Os"
     - name: Build and test package
       run: ~/spack.x -e tools/environments/ci/ install -j3 --test=root -v
