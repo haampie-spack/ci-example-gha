@@ -2,9 +2,8 @@
 
 # CI for C / C++ / Fortran / Python projects using Spack
 
-- Set up the latest Spack using https://github.com/haampie/spack-batteries-included
-- Use the compilers github actions offers in their images
-- Use multiple compilers in a matrix
+- Set up Spack through https://github.com/haampie/spack-batteries-included
+- Use (a matrix of) compilers from the host (see https://github.com/actions/virtual-environments)
 - Reuse binaries, sources and ccache to speed up your n'th build
 
 All you need is a [workflow](.github/workflows/ci.yaml), an [environment file](tools/environments/ci/spack.yaml) and [spack package](tools/spack/packages/mypkg/package.py)
