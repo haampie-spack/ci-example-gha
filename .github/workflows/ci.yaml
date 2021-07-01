@@ -16,10 +16,10 @@ jobs:
       uses: actions/checkout@v2
     - name: Setup Spack
       run: |
-        wget -q https://github.com/haampie/spack-batteries-included/releases/download/develop/spack-x86_64.x -O ~/spack && chmod +x ~/spack
-        ~/spack -e tools/environments/ci/ repo add tools/spack
-        ~/spack -e tools/environments/ci/ add mypkg %${{ matrix.compiler }}
-        ~/spack -e tools/environments/ci/ concretize
+        wget -q https://github.com/haampie/spack-batteries-included/releases/download/develop/spack-x86_64.x -O ~/spack.x && chmod +x ~/spack.x
+        ~/spack.x -e tools/environments/ci/ repo add tools/spack
+        ~/spack.x -e tools/environments/ci/ add mypkg %${{ matrix.compiler }}
+        ~/spack.x -e tools/environments/ci/ concretize
     - name: Restore build cache
       uses: actions/cache@v2
       with:
@@ -28,8 +28,8 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-spack-${{ matrix.compiler }}-
     - name: Build dependencies
-      run: ~/spack -e tools/environments/ci/ install -j3 --only=dependencies
+      run: ~/spack.x -e tools/environments/ci/ install -j3 --only=dependencies
       env:
         SPACK_OPTIMIZATION_FLAGS: "-Os"
     - name: Build and test package
-      run: ~/spack -e tools/environments/ci/ install -j3 --test=root -v
+      run: ~/spack.x -e tools/environments/ci/ install -j3 --test=root -v
