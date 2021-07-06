@@ -4,7 +4,7 @@ on: push
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         compiler:
@@ -12,26 +12,31 @@ jobs:
         - clang
     env:
       SPACK_COLOR: always
-      CCACHE_DIR: ~/.spack-ci/ccache_dir
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Setup Spack
+
+    - name: Set up Spack
+      uses: haampie-spack/setup-spack@v1.2.1
+      with:
+        os: ubuntu-20.04
+        ref: develop
+
+    - name: Setup package
       run: |
-        wget -q https://github.com/haampie/spack-batteries-included/releases/download/develop/spack-x86_64.x -O ~/spack.x && chmod +x ~/spack.x
-        ~/spack.x -e ./ci repo add ci/repo
-        ~/spack.x -e ./ci add mypkg %${{ matrix.compiler }}
-        ~/spack.x -e ./ci concretize
+        spack -e ./ci repo add ci/repo
+        spack -e ./ci add mypkg %${{ matrix.compiler }}
+        spack -e ./ci concretize
+
     - name: Restore build cache
       uses: actions/cache@v2
       with:
         path: ~/.spack-ci
         key: ${{ runner.os }}-spack-${{ matrix.compiler }}-${{ hashFiles('**/spack.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-spack-${{ matrix.compiler }}-
+        restore-keys: ${{ runner.os }}-spack-${{ matrix.compiler }}-
+
     - name: Build dependencies
-      run: ~/spack.x -e ./ci install -j3 --only=dependencies
-      env:
-        SPACK_OPTIMIZATION_FLAGS: "-Os"
+      run: spack -e ./ci install -j3 --only=dependencies
+
     - name: Build and test package
-      run: ~/spack.x -e ./ci install -j3 --test=root -v
+      run: spack -e ./ci install -j3 --test=root -v

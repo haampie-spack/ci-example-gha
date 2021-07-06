@@ -1,7 +1,6 @@
 spack:
   view: false
   config:
-    ccache: true
     source_cache: ~/.spack-ci/source_cache
     misc_cache: ~/.spack-ci/misc_cache
     test_cache: ~/.spack-ci/test_cache
