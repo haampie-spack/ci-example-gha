@@ -18,5 +18,5 @@ spack:
         mpi: [mpich]
   develop:
     mypkg:
-      path: ../../..
+      path: ../
       spec: mypkg@main
