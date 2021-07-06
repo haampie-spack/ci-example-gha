@@ -6,4 +6,4 @@
 - Use (a matrix of) compilers from github actions (see https://github.com/actions/virtual-environments);
 - Reuse binaries, sources and ccache to speed up your n'th build.
 
-All you need is a [workflow](.github/workflows/ci.yaml), an [environment file](tools/environments/ci/spack.yaml) and a [spack package](tools/spack/packages/mypkg/package.py).
+All you need is a [workflow](.github/workflows/ci.yaml), an [environment file](ci/spack.yaml) and a [spack package](ci/repo/packages/mypkg/package.py).
