@@ -2,7 +2,7 @@
 
 # CI for C / C++ / Fortran / Python projects using Spack
 
-- Set up Spack through https://github.com/haampie/spack-batteries-included;
+- Set up Spack through https://github.com/haampie-spack/setup-spack;
 - Use (a matrix of) compilers from github actions (see https://github.com/actions/virtual-environments);
 - Reuse binaries, sources and ccache to speed up your n'th build.
 
