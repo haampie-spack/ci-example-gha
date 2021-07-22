@@ -24,7 +24,6 @@ jobs:
 
     - name: Setup package
       run: |
-        spack -e ./ci repo add ci/repo
         spack -e ./ci add mypkg %${{ matrix.compiler }}
         spack -e ./ci concretize
 
